@@ -2,21 +2,30 @@ pipeline {
     agent any
 
     stages {
-        stage('Clone') {
+
+        stage('Checkout') {
             steps {
-                echo 'Cloning project...'
+                echo 'Project cloned automatically by Jenkins'
             }
         }
 
-        stage('Build') {
+        stage('Test') {
             steps {
-                sh './mvnw clean package -DskipTests'
+                echo 'Running tests...'
+                sh './mvnw test'
+            }
+        }
+
+        stage('Package') {
+            steps {
+                echo 'Building jar...'
+                sh './mvnw clean package'
             }
         }
 
         stage('Finished') {
             steps {
-                echo 'Pipeline completed successfully!'
+                echo 'CI pipeline completed successfully!'
             }
         }
     }
