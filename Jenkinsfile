@@ -5,7 +5,7 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                echo 'Project cloned automatically by Jenkins'
+                echo 'Project cloned automatically'
             }
         }
 
@@ -18,8 +18,15 @@ pipeline {
 
         stage('Package') {
             steps {
-                echo 'Building jar...'
+                echo 'Building JAR...'
                 sh './mvnw clean package'
+            }
+        }
+
+        stage('Docker Build') {
+            steps {
+                echo 'Building Docker image...'
+                sh "docker build -t petclinic:${BUILD_NUMBER} ."
             }
         }
 
@@ -30,3 +37,4 @@ pipeline {
         }
     }
 }
+
