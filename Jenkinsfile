@@ -16,23 +16,6 @@ pipeline {
             }
         }
 
-        stage('SonarCloud Analysis') {
-            steps {
-                withSonarQubeEnv('SonarCloud') {
-                    script {
-                        def scannerHome = tool 'SonarScanner'
-                    }
-                    sh """
-                        ${tool('SonarScanner')}/bin/sonar-scanner \
-                        -Dsonar.projectKey=YassineZitouni29_spring-petclinic \
-                        -Dsonar.organization=yassinezitouni29 \
-                        -Dsonar.sources=. \
-                        -Dsonar.host.url=https://sonarcloud.io
-                    """
-                }
-            }
-        }
-
 
         stage('Package') {
             steps {
@@ -40,6 +23,23 @@ pipeline {
                 sh './mvnw clean package'
             }
         }
+
+        stage('SonarCloud Analysis') {
+                    steps {
+                        withSonarQubeEnv('SonarCloud') {
+                            script {
+                                def scannerHome = tool 'SonarScanner'
+                            }
+                            sh """
+                                ${tool('SonarScanner')}/bin/sonar-scanner \
+                                -Dsonar.projectKey=YassineZitouni29_spring-petclinic \
+                                -Dsonar.organization=yassinezitouni29 \
+                                -Dsonar.sources=. \
+                                -Dsonar.java.binaries=target/classes \
+                                -Dsonar.host.url=https://sonarcloud.io
+                            """
+                        }
+                    }
 
         stage('Docker Build') {
             steps {
