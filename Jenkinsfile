@@ -16,6 +16,20 @@ pipeline {
             }
         }
 
+        stage('SonarCloud Analysis') {
+            steps {
+                withSonarQubeEnv('SonarCloud') {
+                    sh """
+                        sonar-scanner \
+                        -Dsonar.projectKey=YassineZitouni29_spring-petclinic \
+                        -Dsonar.organization=YassineZitouni29 \
+                        -Dsonar.sources=. \
+                        -Dsonar.host.url=https://sonarcloud.io
+                        """
+                }
+            }
+        }
+
         stage('Package') {
             steps {
                 echo 'Building JAR...'
