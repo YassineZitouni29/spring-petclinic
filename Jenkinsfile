@@ -19,16 +19,20 @@ pipeline {
         stage('SonarCloud Analysis') {
             steps {
                 withSonarQubeEnv('SonarCloud') {
+                    script {
+                        def scannerHome = tool 'SonarScanner'
+                    }
                     sh """
-                        sonar-scanner \
+                        ${tool('SonarScanner')}/bin/sonar-scanner \
                         -Dsonar.projectKey=YassineZitouni29_spring-petclinic \
                         -Dsonar.organization=YassineZitouni29 \
                         -Dsonar.sources=. \
                         -Dsonar.host.url=https://sonarcloud.io
-                        """
+                    """
                 }
             }
         }
+
 
         stage('Package') {
             steps {
