@@ -61,6 +61,19 @@ pipeline {
                 }
             }
         }
+        stage('Kubernetes Deploy') {
+            steps {
+                echo "Deploying latest image to Kubernetes..."
+
+                // Replace the container image inside the existing Deployment
+                sh """
+                    kubectl set image deployment/petclinic \
+                        petclinic=\$DOCKER_USER/petclinic:${BUILD_NUMBER} \
+                        --record
+                """
+            }
+        }
+
 
         stage('Finished') {
             steps {
